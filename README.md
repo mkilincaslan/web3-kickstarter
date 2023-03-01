@@ -1,2 +1,2 @@
-# web3-kickstarter
-Blockchain based Kickstarter app
+# WEB3 KickStarter
+Blockchain based KickStarter app
