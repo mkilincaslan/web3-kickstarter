@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Button } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import Layout from "../components/Layout";
 import factory from "../ethereum/factory";
 
 const CardExampleGroupProps = ({ items }) => <Card.Group items={items} />;
@@ -13,14 +14,20 @@ const Index = ({ contracts }) => {
   }));
 
   return (
-    <div>
+    <Layout>
+      <h3>Open Campaigns</h3>
       <CardExampleGroupProps items={contracts} />
-      <Button content="Create Campaign" icon="add circle" primary labelPosition="right" />
-    </div>
+      <Button
+        content="Create Campaign"
+        icon="add circle"
+        primary
+        labelPosition="right"
+      />
+    </Layout>
   );
 };
 
-Index.getInitialProps = async (ctx) => {
+Index.getInitialProps = async () => {
   const contracts = await factory.methods.getDeployedCampaigns().call();
 
   return { contracts };
