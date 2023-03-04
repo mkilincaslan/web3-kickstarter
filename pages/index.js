@@ -1,5 +1,22 @@
 import React from "react";
+import { Card } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
+import factory from '../ethereum/factory';
 
-export default () => {
-  return <h1>This is the campaign list page!!!</h1>;
+const CardExampleGroupProps = ({items}) => <Card.Group items={items} />
+
+const Index = ({ contracts }) => {
+  contracts = contracts.map(address => ({ header: address, fluid: true, description: <a>View Campaign</a> }));
+
+  return (
+    <div><CardExampleGroupProps items={contracts} /></div>
+  );
 };
+
+Index.getInitialProps = async (ctx) => {
+  const contracts = await factory.methods.getDeployedCampaigns().call();
+
+  return { contracts }
+}
+
+export default Index;
