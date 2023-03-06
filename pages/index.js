@@ -16,13 +16,14 @@ const Index = ({ contracts }) => {
   return (
     <Layout>
       <h3>Open Campaigns</h3>
-      <CardExampleGroupProps items={contracts} />
       <Button
         content="Create Campaign"
+        floated="right"
         icon="add circle"
         primary
         labelPosition="right"
       />
+      <CardExampleGroupProps items={contracts} />
     </Layout>
   );
 };
