@@ -7,16 +7,20 @@ import web3 from "../../ethereum/web3";
 const NewCampaign = () => {
   const [contribution, setContribution] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
     try {
       const accounts = await web3.eth.getAccounts();
       await factory.methods
         .createCampaign(contribution)
         .send({ from: accounts[0] });
+        setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.error(err.message);
       setErrorMessage(err.message);
     }
@@ -37,7 +41,7 @@ const NewCampaign = () => {
           />
           <Message error header={errorMessage} />
         </Form.Field>
-        <Button primary type="submit">
+        <Button primary type="submit" loading={loading}>
           Create Campaign
         </Button>
       </Form>
