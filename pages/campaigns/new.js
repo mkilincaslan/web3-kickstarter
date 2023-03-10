@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { Button, Form, Input, Message } from "semantic-ui-react";
 import Layout from "../../components/Layout";
 import factory from "../../ethereum/factory";
@@ -9,8 +10,11 @@ const NewCampaign = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
+
   const onSubmit = async (event) => {
     event.preventDefault();
+    setErrorMessage("");
     setLoading(true);
 
     try {
@@ -18,7 +22,9 @@ const NewCampaign = () => {
       await factory.methods
         .createCampaign(contribution)
         .send({ from: accounts[0] });
-        setLoading(false);
+
+      setLoading(false);
+      router.push("/");
     } catch (err) {
       setLoading(false);
       console.error(err.message);
@@ -28,7 +34,7 @@ const NewCampaign = () => {
   return (
     <Layout>
       <h3>Create a Campaign</h3>
-      <Form onSubmit={onSubmit} error={!!(errorMessage)}>
+      <Form onSubmit={onSubmit} error={!!errorMessage}>
         <Form.Field>
           <label>Minimum Contribution (Wei)</label>
           <Input
@@ -37,7 +43,7 @@ const NewCampaign = () => {
             placeholder="Minimum Contribution"
             value={contribution}
             onChange={(event) => setContribution(event.target.value)}
-            error={!!(errorMessage)}
+            error={!!errorMessage}
           />
           <Message error header={errorMessage} />
         </Form.Field>
