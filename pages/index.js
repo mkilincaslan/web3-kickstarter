@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Card, Button } from "semantic-ui-react";
 import Layout from "../components/Layout";
 import factory from "../ethereum/factory";
@@ -15,13 +16,15 @@ const Index = ({ contracts }) => {
   return (
     <Layout>
       <h3>Open Campaigns</h3>
-      <Button
-        content="Create Campaign"
-        floated="right"
-        icon="add circle"
-        primary
-        labelPosition="right"
-      />
+      <Link href="/campaigns/new">
+        <Button
+          content="Create Campaign"
+          floated="right"
+          icon="add circle"
+          primary
+          labelPosition="right"
+        />
+      </Link>
       <CardExampleGroupProps items={contracts} />
     </Layout>
   );
