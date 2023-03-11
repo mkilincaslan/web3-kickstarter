@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import { Menu } from "semantic-ui-react";
 
 export default function Header() {
   const [activeItem, setActiveItem] = useState(null);
-  const handleItemClick = (e, { name }) => setActiveItem(name)
+  const handleItemClick = (e, { name }) => {
+    setActiveItem(name);
+  };
 
   return (
     <Menu>
@@ -12,7 +15,7 @@ export default function Header() {
         active={activeItem === "crowdcoin"}
         onClick={handleItemClick}
       >
-        CrowdCoin
+        <Link href="/">CrowdCoin</Link>
       </Menu.Item>
 
       <Menu.Menu position="right">
@@ -21,7 +24,7 @@ export default function Header() {
           active={activeItem === "campaigns"}
           onClick={handleItemClick}
         >
-          Campaigns
+          <Link href="/campaigns">Campaigns</Link>
         </Menu.Item>
 
         <Menu.Item
@@ -29,7 +32,7 @@ export default function Header() {
           active={activeItem === "help"}
           onClick={handleItemClick}
         >
-          +
+          <Link href="/campaigns/new">+</Link>
         </Menu.Item>
       </Menu.Menu>
     </Menu>
