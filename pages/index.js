@@ -10,7 +10,7 @@ const Index = ({ contracts }) => {
   contracts = contracts.map((address) => ({
     header: address,
     fluid: true,
-    description: <a>View Campaign</a>,
+    description: <Link href={`/campaigns/${address}`}>View Campaign</Link>,
   }));
 
   return (
