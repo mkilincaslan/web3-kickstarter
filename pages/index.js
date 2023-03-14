@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Card, Button } from "semantic-ui-react";
 import Layout from "../components/Layout";
-import factory from "../ethereum/factory";
+import { factoryInstance } from "../ethereum/contracts";
 
 const CardExampleGroupProps = ({ items }) => <Card.Group items={items} />;
 
@@ -31,7 +31,7 @@ const Index = ({ contracts }) => {
 };
 
 Index.getInitialProps = async () => {
-  const contracts = await factory.methods.getDeployedCampaigns().call();
+  const contracts = await factoryInstance.methods.getDeployedCampaigns().call();
 
   return { contracts };
 };
