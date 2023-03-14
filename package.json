@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "dev": "next dev"
+    "dev": "next dev",
+    "compile:contract": "node ethereum/compile.js",
+    "deploy:contract": "node ethereum/deploy.js"
   },
   "author": "",
   "license": "ISC",
