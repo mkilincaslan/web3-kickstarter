@@ -18,10 +18,10 @@ const Index = ({ contracts }) => {
       <h3>Open Campaigns</h3>
       <Link href="/campaigns/new">
         <Button
+          primary
           content="Create Campaign"
           floated="right"
           icon="add circle"
-          primary
           labelPosition="right"
         />
       </Link>
