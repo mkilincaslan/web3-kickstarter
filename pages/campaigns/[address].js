@@ -1,8 +1,8 @@
 import React from "react";
-import { Card } from "semantic-ui-react";
+import { Card, Grid } from "semantic-ui-react";
 import web3 from "../../ethereum/web3";
 import Layout from "../../components/Layout";
-import ContributeForm from '../../components/Contribute';
+import ContributeForm from "../../components/Contribute";
 import { getCampaignByAddress } from "../../ethereum/contracts";
 
 const translateContractDetail = (detail) => {
@@ -14,43 +14,56 @@ const translateContractDetail = (detail) => {
     manager: detail[4],
   };
 
-
   return [
     {
-      header: 'Minimum Contribution',
-      meta: `${web3.utils.fromWei(contractObject.minimumContribution, 'ether')} eth`,
-      description: 'The minimum amount for the contribution of this particular campaign'
+      header: "Minimum Contribution",
+      meta: `${web3.utils.fromWei(
+        contractObject.minimumContribution,
+        "ether"
+      )} eth`,
+      description:
+        "The minimum amount for the contribution of this particular campaign",
     },
     {
-      header: 'Balance',
-      meta: `${web3.utils.fromWei(contractObject.balance, 'ether')} eth`,
-      description: 'The current balance is how much money of this campaign has left to spend'
+      header: "Balance",
+      meta: `${web3.utils.fromWei(contractObject.balance, "ether")} eth`,
+      description:
+        "The current balance is how much money of this campaign has left to spend",
     },
     {
-      header: 'Requests Count',
+      header: "Requests Count",
       meta: contractObject.requestsCount,
-      description: 'The requests counts of this campaign created by manager to withdraw the money for some costs'
+      description:
+        "The requests counts of this campaign created by manager to withdraw the money for some costs",
     },
     {
-      header: 'Approvers Count',
+      header: "Approvers Count",
       meta: contractObject.approversCount,
-      description: 'The approvers counts of this campaign who contributed/donated to this campaign'
+      description:
+        "The approvers counts of this campaign who contributed/donated to this campaign",
     },
     {
-      header: 'Manager',
+      header: "Manager",
       meta: contractObject.manager,
-      description: 'The manager of this campaign who created and manages this campaign',
-      style: { overflowWrap: 'break-word' }
-    }
+      description:
+        "The manager of this campaign who created and manages this campaign",
+      style: { overflowWrap: "break-word" },
+    },
   ];
 };
 
 const CampaignDetails = ({ contractDetail }) => {
-
   return (
     <Layout>
-      <Card.Group items={contractDetail} />
-      <ContributeForm />
+      <h3>Campaign Details</h3>
+      <Grid>
+        <Grid.Column width={10}>
+          <Card.Group items={contractDetail} />
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <ContributeForm />
+        </Grid.Column>
+      </Grid>
     </Layout>
   );
 };
