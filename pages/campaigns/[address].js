@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "semantic-ui-react";
 import web3 from "../../ethereum/web3";
 import Layout from "../../components/Layout";
+import ContributeForm from '../../components/Contribute';
 import { getCampaignByAddress } from "../../ethereum/contracts";
 
 const translateContractDetail = (detail) => {
@@ -49,6 +50,7 @@ const CampaignDetails = ({ contractDetail }) => {
   return (
     <Layout>
       <Card.Group items={contractDetail} />
+      <ContributeForm />
     </Layout>
   );
 };
