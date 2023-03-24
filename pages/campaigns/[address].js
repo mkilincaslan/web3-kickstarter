@@ -52,7 +52,7 @@ const translateContractDetail = (detail) => {
   ];
 };
 
-const CampaignDetails = ({ contractDetail }) => {
+const CampaignDetails = ({ contractDetail, address }) => {
   return (
     <Layout>
       <h3>Campaign Details</h3>
@@ -61,7 +61,7 @@ const CampaignDetails = ({ contractDetail }) => {
           <Card.Group items={contractDetail} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <ContributeForm />
+          <ContributeForm address={address} />
         </Grid.Column>
       </Grid>
     </Layout>
@@ -72,7 +72,7 @@ CampaignDetails.getInitialProps = async ({ query }) => {
   const { address } = query;
   const campaign = getCampaignByAddress(address);
   const contractDetail = await campaign.methods.getSummary().call();
-  return { contractDetail: translateContractDetail(contractDetail) };
+  return { contractDetail: translateContractDetail(contractDetail), address };
 };
 
 export default CampaignDetails;
