@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Message } from "semantic-ui-react";
+import { useRouter } from 'next/router'
 import { getCampaignByAddress } from "../ethereum/contracts";
 import web3 from "../ethereum/web3";
 
@@ -7,6 +8,8 @@ const Contribute = ({ address }) => {
   const [contribution, setContribution] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const router = useRouter();
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -24,6 +27,8 @@ const Contribute = ({ address }) => {
         });
 
       setLoading(false);
+
+      router.reload(window.location.pathname);
     } catch (err) {
       setLoading(false);
       console.error(err.message);
