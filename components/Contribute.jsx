@@ -14,17 +14,20 @@ const Contribute = ({ address }) => {
     setLoading(true);
 
     try {
-        const accounts = await web3.eth.getAccounts();
-        const campaignContract = getCampaignByAddress(address);
-        await campaignContract.methods
-            .contribute(contribution)
-            .send({ from: accounts[0], value: web3.utils.toWei(contribution, 'ether') });
-  
-        setLoading(false);
+      const accounts = await web3.eth.getAccounts();
+      const campaignContract = getCampaignByAddress(address);
+      await campaignContract.methods
+        .contribute()
+        .send({
+          from: accounts[0],
+          value: web3.utils.toWei(contribution, "ether"),
+        });
+
+      setLoading(false);
     } catch (err) {
-        setLoading(false);
-        console.error(err.message);
-        setErrorMessage(err.message);
+      setLoading(false);
+      console.error(err.message);
+      setErrorMessage(err.message);
     }
   };
 
