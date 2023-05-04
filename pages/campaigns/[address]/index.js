@@ -1,9 +1,10 @@
 import React from "react";
-import { Card, Grid } from "semantic-ui-react";
-import web3 from "../../ethereum/web3";
-import Layout from "../../components/Layout";
-import ContributeForm from "../../components/Contribute";
-import { getCampaignByAddress } from "../../ethereum/contracts";
+import Link from "next/link";
+import { Card, Grid, Button } from "semantic-ui-react";
+import web3 from "../../../ethereum/web3";
+import Layout from "../../../components/Layout";
+import ContributeForm from "../../../components/Contribute";
+import { getCampaignByAddress } from "../../../ethereum/contracts";
 
 const translateContractDetail = (detail) => {
   const contractObject = {
@@ -57,12 +58,22 @@ const CampaignDetails = ({ contractDetail, address }) => {
     <Layout>
       <h3>Campaign Details</h3>
       <Grid>
-        <Grid.Column width={10}>
-          <Card.Group items={contractDetail} />
-        </Grid.Column>
-        <Grid.Column width={6}>
-          <ContributeForm address={address} />
-        </Grid.Column>
+        <Grid.Row>
+          <Grid.Column width={10}>
+            <Card.Group items={contractDetail} />
+          </Grid.Column>
+          <Grid.Column width={6}>
+            <ContributeForm address={address} />
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row>
+          <Grid.Column>
+            <Link href={`/campaigns/${address}/requests`}>
+              <Button primary content="View Requests" />
+            </Link>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </Layout>
   );

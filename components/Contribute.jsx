@@ -27,10 +27,13 @@ const Contribute = ({ address }) => {
         });
 
       setLoading(false);
+      setContribution("");
 
       router.reload(window.location.pathname);
     } catch (err) {
       setLoading(false);
+      setContribution("");
+
       console.error(err.message);
       setErrorMessage(err.message);
     }
