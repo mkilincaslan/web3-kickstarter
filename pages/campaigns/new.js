@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Button, Form, Input, Message } from "semantic-ui-react";
 import Layout from "../../components/Layout";
-import factory from "../../ethereum/factory";
 import web3 from "../../ethereum/web3";
+import { factoryInstance } from "../../ethereum/contracts";
 
 const NewCampaign = () => {
   const [contribution, setContribution] = useState("");
@@ -19,7 +19,7 @@ const NewCampaign = () => {
 
     try {
       const accounts = await web3.eth.getAccounts();
-      await factory.methods
+      await factoryInstance.methods
         .createCampaign(contribution)
         .send({ from: accounts[0] });
 
