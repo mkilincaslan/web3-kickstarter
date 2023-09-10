@@ -39,8 +39,22 @@ const TableRow = ({ request, approversCount, id, onApproveClick, onFinalizeClick
 
 const Requests = ({ address, requests, approversCount }) => {
 
-  const onApproveClick = () => {};
-  const onFinalizeClick = () => {};
+  const onApproveClick = async (id) => {
+    const accounts = await web3.eth.getAccounts();
+    const campaign = getCampaignByAddress(address);
+
+    await campaign.methods.approveRequest(id).send({
+      from: accounts[0]
+    });
+  };
+  const onFinalizeClick = async (id) => {
+    const accounts = await web3.eth.getAccounts();
+    const campaign = getCampaignByAddress(address);
+
+    await campaign.methods.finalizeRequest(id).send({
+      from: accounts[0]
+    });
+  };
 
   return (
     <Layout>
@@ -64,8 +78,8 @@ const Requests = ({ address, requests, approversCount }) => {
                   <TableRow
                     request={request}
                     approversCount={approversCount}
-                    onApproveClick={onApproveClick}
-                    onFinalizeClick={onFinalizeClick}
+                    onApproveClick={() => onApproveClick(index)}
+                    onFinalizeClick={() => onFinalizeClick(index)}
                     id={index}
                   />
                 ))}
