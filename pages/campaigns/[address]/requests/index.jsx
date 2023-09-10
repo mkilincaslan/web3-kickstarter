@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, Grid, Table } from "semantic-ui-react";
 import Layout from "../../../../components/Layout";
+import { getCampaignByAddress } from "../../../../ethereum/contracts";
 
-const Requests = ({ address }) => {
+const Requests = ({ address, requests }) => {
   return (
     <Layout>
       <Grid>
@@ -17,14 +18,39 @@ const Requests = ({ address }) => {
             </Link>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row>{/* Table will be here filled by requests data */}</Grid.Row>
+        <Grid.Row>
+          <Table celled>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>ID</Table.HeaderCell>
+                <Table.HeaderCell>Description</Table.HeaderCell>
+                <Table.HeaderCell>Amount</Table.HeaderCell>
+                <Table.HeaderCell>Recipient</Table.HeaderCell>
+                <Table.HeaderCell>Approval Count</Table.HeaderCell>
+                <Table.HeaderCell>Approve</Table.HeaderCell>
+                <Table.HeaderCell>Finalize</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+
+          </Table>
+        </Grid.Row>
       </Grid>
     </Layout>
   );
 };
 
 Requests.getInitialProps = async ({ query }) => {
-  return { address: query.address };
+  const { address } = query;
+  const campaign = getCampaignByAddress(address);
+  const requestsCount = await campaign.methods.getRequestsCount().call();
+
+  const requests = await Promise.all(
+    Array(requestsCount).fill().map((_, index) => {
+      return campaign.methods.requests(index).call()
+    }),
+  );
+
+  return { address, requests, requestsCount };
 };
 
 export default Requests;
