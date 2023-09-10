@@ -3,8 +3,9 @@ import Link from "next/link";
 import { Button, Grid, Table } from "semantic-ui-react";
 import Layout from "../../../../components/Layout";
 import { getCampaignByAddress } from "../../../../ethereum/contracts";
+import web3 from "../../../../ethereum/web3";
 
-const Requests = ({ address, requests }) => {
+const Requests = ({ address, requests, approversCount }) => {
   return (
     <Layout>
       <Grid>
@@ -32,6 +33,19 @@ const Requests = ({ address, requests }) => {
               </Table.Row>
             </Table.Header>
 
+            <Table.Body>
+              {requests.length && requests.map((request, index) => (
+                <Table.Row>
+                  <Table.Cell>{index}</Table.Cell>
+                  <Table.Cell>{request.description}</Table.Cell>
+                  <Table.Cell>{web3.utils.fromWei(request.value, 'ether')} eth</Table.Cell>
+                  <Table.Cell>{request.recipient}</Table.Cell>
+                  <Table.Cell>{request.approvalCount}/{approversCount}</Table.Cell>
+                  <Table.Cell positive>Approve</Table.Cell>
+                  <Table.Cell negative>Finalize</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
           </Table>
         </Grid.Row>
       </Grid>
@@ -43,6 +57,7 @@ Requests.getInitialProps = async ({ query }) => {
   const { address } = query;
   const campaign = getCampaignByAddress(address);
   const requestsCount = await campaign.methods.getRequestsCount().call();
+  const approversCount = await campaign.methods.approversCount().call();
 
   const requests = await Promise.all(
     Array(requestsCount).fill().map((_, index) => {
@@ -50,7 +65,7 @@ Requests.getInitialProps = async ({ query }) => {
     }),
   );
 
-  return { address, requests, requestsCount };
+  return { address, requests, requestsCount, approversCount };
 };
 
 export default Requests;
