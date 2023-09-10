@@ -19,7 +19,7 @@ const TableHeader = () => (
   </Table.Header>
 );
 
-const TableRow = ({ request, approversCount, id }) => (
+const TableRow = ({ request, approversCount, id, onApproveClick, onFinalizeClick }) => (
   <Table.Row>
     <Table.Cell>{id}</Table.Cell>
     <Table.Cell>{request.description}</Table.Cell>
@@ -28,12 +28,20 @@ const TableRow = ({ request, approversCount, id }) => (
     <Table.Cell>
       {request.approvalCount}/{approversCount}
     </Table.Cell>
-    <Table.Cell positive>Approve</Table.Cell>
-    <Table.Cell negative>Finalize</Table.Cell>
+    <Table.Cell positive>
+      <Button basic onClick={onApproveClick}>Approve</Button>
+    </Table.Cell>
+    <Table.Cell negative>
+      <Button basic onClick={onFinalizeClick}>Finalize</Button>
+    </Table.Cell>
   </Table.Row>
 );
 
 const Requests = ({ address, requests, approversCount }) => {
+
+  const onApproveClick = () => {};
+  const onFinalizeClick = () => {};
+
   return (
     <Layout>
       <Grid>
@@ -53,7 +61,13 @@ const Requests = ({ address, requests, approversCount }) => {
             <Table.Body>
               {requests.length &&
                 requests.map((request, index) => (
-                  <TableRow request={request} approversCount={approversCount} id={index}/>
+                  <TableRow
+                    request={request}
+                    approversCount={approversCount}
+                    onApproveClick={onApproveClick}
+                    onFinalizeClick={onFinalizeClick}
+                    id={index}
+                  />
                 ))}
             </Table.Body>
           </Table>
