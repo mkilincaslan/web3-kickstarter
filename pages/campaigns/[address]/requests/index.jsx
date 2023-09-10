@@ -19,8 +19,14 @@ const TableHeader = () => (
   </Table.Header>
 );
 
-const TableRow = ({ request, approversCount, id, onApproveClick, onFinalizeClick }) => (
-  <Table.Row>
+const TableRow = ({
+  request,
+  approversCount,
+  id,
+  onApproveClick,
+  onFinalizeClick,
+}) => (
+  <Table.Row disabled={request.complete} positive={request.approvalCount > approversCount / 2}>
     <Table.Cell>{id}</Table.Cell>
     <Table.Cell>{request.description}</Table.Cell>
     <Table.Cell>{web3.utils.fromWei(request.value, "ether")} eth</Table.Cell>
@@ -28,23 +34,26 @@ const TableRow = ({ request, approversCount, id, onApproveClick, onFinalizeClick
     <Table.Cell>
       {request.approvalCount}/{approversCount}
     </Table.Cell>
-    <Table.Cell positive>
-      <Button basic onClick={onApproveClick}>Approve</Button>
+    <Table.Cell textAlign="center">
+      <Button basic color="green" disabled={request.complete} onClick={onApproveClick}>
+        Approve
+      </Button>
     </Table.Cell>
-    <Table.Cell negative>
-      <Button basic onClick={onFinalizeClick}>Finalize</Button>
+    <Table.Cell textAlign="center">
+      <Button basic color="red" disabled={request.complete} onClick={onFinalizeClick}>
+        Finalize
+      </Button>
     </Table.Cell>
   </Table.Row>
 );
 
 const Requests = ({ address, requests, approversCount }) => {
-
   const onApproveClick = async (id) => {
     const accounts = await web3.eth.getAccounts();
     const campaign = getCampaignByAddress(address);
 
     await campaign.methods.approveRequest(id).send({
-      from: accounts[0]
+      from: accounts[0],
     });
   };
   const onFinalizeClick = async (id) => {
@@ -52,7 +61,7 @@ const Requests = ({ address, requests, approversCount }) => {
     const campaign = getCampaignByAddress(address);
 
     await campaign.methods.finalizeRequest(id).send({
-      from: accounts[0]
+      from: accounts[0],
     });
   };
 
@@ -97,13 +106,13 @@ Requests.getInitialProps = async ({ query }) => {
   const requestsCount = await campaign.methods.getRequestsCount().call();
   const approversCount = await campaign.methods.approversCount().call();
 
-  const requests = await Promise.all(
+  const requests = requestsCount > 0 ? await Promise.all(
     Array(requestsCount)
       .fill()
       .map((_, index) => {
         return campaign.methods.requests(index).call();
       })
-  );
+  ) : [];
 
   return { address, requests, requestsCount, approversCount };
 };
