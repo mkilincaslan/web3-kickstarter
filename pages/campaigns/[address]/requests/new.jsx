@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { Button, Form, Grid, Input, Message } from "semantic-ui-react";
 import web3 from "../../../../ethereum/web3";
 import { getCampaignByAddress } from "../../../../ethereum/contracts";
@@ -23,11 +24,11 @@ const NewRequest = ({address}) => {
       const {description, value, recipient} = formValues;
 
       await campaign.methods
-        .createRequest(description, value, recipient)
+        .createRequest(description, web3.utils.toWei(value, 'ether'), recipient)
         .send({ from: accounts[0] });
 
       setLoading(false);
-      router.reload(window.location.pathname);
+      router.push(`/campaigns/${address}/requests`);
     } catch (err) {
       setLoading(false);
       console.error(err.message);
@@ -40,6 +41,9 @@ const NewRequest = ({address}) => {
       <Grid>
         <Grid.Row>
           <Grid.Column width={8}>
+            <Link href={`/campaigns/${address}/requests`}>
+              <Button content="< Back" />
+            </Link>
             <h3>Create a Request</h3>
 
             <Form onSubmit={onSubmit} error={!!errorMessage}>
@@ -51,7 +55,6 @@ const NewRequest = ({address}) => {
                   onChange={(event) => setFormValues(previous => ({...previous, description: event.target.value}))}
                   error={!!errorMessage}
                 />
-                <Message error header={errorMessage} />
               </Form.Field>
               <Form.Field>
                 <label>Recipient Address</label>
@@ -61,20 +64,20 @@ const NewRequest = ({address}) => {
                   onChange={(event) => setFormValues(previous => ({...previous, recipient: event.target.value}))}
                   error={!!errorMessage}
                 />
-                <Message error header={errorMessage} />
               </Form.Field>
               <Form.Field>
-                <label>Value of The Request to Spend (Wei)</label>
+                <label>Value of The Request to Spend (Eth)</label>
                 <Input
-                  label="Wei"
+                  label="Eth"
                   labelPosition="right"
                   placeholder="Value"
                   value={formValues['value']}
                   onChange={(event) => setFormValues(previous => ({...previous, value: event.target.value}))}
                   error={!!errorMessage}
                 />
-                <Message error header={errorMessage} />
               </Form.Field>
+
+              <Message error header={errorMessage} />
               <Button primary type="submit" loading={loading}>
                 Create Request
               </Button>
