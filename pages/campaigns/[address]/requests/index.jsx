@@ -47,7 +47,7 @@ const TableRow = ({
   </Table.Row>
 );
 
-const Requests = ({ address, requests, approversCount }) => {
+const Requests = ({ address, requests, approversCount, requestsCount }) => {
   const onApproveClick = async (id) => {
     const accounts = await web3.eth.getAccounts();
     const campaign = getCampaignByAddress(address);
@@ -94,6 +94,9 @@ const Requests = ({ address, requests, approversCount }) => {
                 ))}
             </Table.Body>
           </Table>
+        </Grid.Row>
+        <Grid.Row>
+          <p>Found {requestsCount} requests</p>
         </Grid.Row>
       </Grid>
     </Layout>
